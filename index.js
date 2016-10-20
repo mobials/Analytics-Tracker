@@ -21,17 +21,19 @@ var analytics = {};
     analytics.SDKClientKey = analytics.SDKClientKey ? analytics.SDKClientKey : null;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {});
 
-analytics.track = function(event, payload) {
+
+analytics.track = function(eventType, payload) {
     var http = new XMLHttpRequest();
 
     //create a new anonymous user if one wasn't passed to us
-    payload.actor_uuid = payload.actor_uuid ? payload.actor_uuid : analytics.getAnonymousUserUuid();
+    var actorUuid = analytics.getAnonymousUserUuid();
 
     var params = JSON.stringify({
-        event: event,
-        payload: payload,
+        event: eventType,
+        payload: [payload],
         sdk_client_key: analytics.SDKClientKey,
-        version: analytics.version
+        version: analytics.version,
+        actor_uuid: actorUuid
     });
     http.open("POST", analytics.dispatch_uri, true);
     http.setRequestHeader("Content-type", "application/json");
