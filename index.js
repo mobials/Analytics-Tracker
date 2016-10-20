@@ -7,28 +7,33 @@
 
 const uuid = require('uuid');
 
+const DISPATCH_URI = 'https://api.mobials.com/tracker/dispatch';
+const COOKIE_NAME = 'mobials_tracker_uuid';
+
 var analytics = {};
 
 //we need to fetch our global analytics variable from wherever this was called.
 (function (global){
-    'use strict';
     analytics = global.analytics;
     analytics.queue = analytics.queue ? analytics.queue : [];
+    analytics.debug = typeof analytics.debug === 'undefined' ? false : analytics.debug;
+    analytics.dispatch_uri = analytics.dispatch_uri ? analytics.dispatch_uri : DISPATCH_URI;
+    analytics.SDKClientKey = analytics.SDKClientKey ? analytics.SDKClientKey : null;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {});
 
 analytics.track = function(event, payload) {
     var http = new XMLHttpRequest();
-    var url = "/tracker/dispatch";
 
     //create a new anonymous user if one wasn't passed to us
-    payload.uuid = payload.uuid ? payload.uuid : analytics.getAnonymousUserUuid();
+    payload.actor_uuid = payload.actor_uuid ? payload.actor_uuid : analytics.getAnonymousUserUuid();
 
     var params = JSON.stringify({
         event: event,
         payload: payload,
-        version: analytics.VERSION
+        sdk_client_key: analytics.SDKClientKey,
+        version: analytics.version
     });
-    http.open("POST", url, true);
+    http.open("POST", analytics.dispatch_uri, true);
     http.setRequestHeader("Content-type", "application/json");
     http.send(params);
 };
@@ -46,16 +51,15 @@ analytics.readCookie = function(name) {
 };
 
 analytics.createNewAnonymousUser = function() {
-    var name = 'mobials_tracker_uuid2';
     var userUuid = uuid.v4();
     var expires = 1234;
-    document.cookie = name + "=" + userUuid + ';' + expires + "; path=/";
+    document.cookie = COOKIE_NAME + "=" + userUuid + ';' + expires + "; path=/";
     return userUuid;
 };
 
 
 analytics.getAnonymousUserUuid = function() {
-    var cookie = analytics.readCookie('mobials_tracker_uuid2');
+    var cookie = analytics.readCookie(COOKIE_NAME);
     return cookie ? cookie : analytics.createNewAnonymousUser();
 };
 
