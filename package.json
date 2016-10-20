@@ -4,7 +4,7 @@
   "description": "mobials js",
   "main": "index.js",
   "scripts": {
-    "build": "browserify index.js > index.browserified.js && minify index.browserified.js --output index.min.js"
+    "build": "browserify index.js > index.browserified.js && minify index.browserified.js --output analytics.min.js"
   },
   "author": "Brad Hanebury",
   "license": "ISC",
