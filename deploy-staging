@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 npm run build
-aws s3 cp index.min.js s3://analytics-tracker.staging.mobials.com/analytics.min.js --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
+aws s3 cp index.min.js s3://cdn.staging.mobials.com/analytics/0.1.0/analytics.min.js --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
 rm index.browserified.js
