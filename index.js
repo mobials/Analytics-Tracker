@@ -25,15 +25,12 @@ var analytics = {};
 analytics.track = function(eventType, payload) {
     var http = new XMLHttpRequest();
 
-    //create a new anonymous user if one wasn't passed to us
-    var actorUuid = analytics.getAnonymousUserUuid();
-
     var params = JSON.stringify({
         event: eventType,
         payload: [payload],
         sdk_client_key: analytics.SDKClientKey,
         version: analytics.version,
-        actor_uuid: actorUuid
+        actor_uuid: analytics.getAnonymousUserUuid()
     });
     http.open("POST", analytics.dispatch_uri, true);
     http.setRequestHeader("Content-type", "application/json");
