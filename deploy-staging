@@ -6,6 +6,11 @@ npm run build
 TAG_VERSION=$(git describe --tags)
 #use that to build our deploy url and push to proper folder in S3
 DEPLOY_URL="s3://cdn.staging.mobials.com/analytics/$TAG_VERSION/analytics.min.js"
+LATEST_DEPLOY_URL="s3://cdn.staging.mobials.com/analytics/latest/analytics.min.js"
 
 aws s3 cp index.min.js ${DEPLOY_URL} --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
+
+#and do another deploy to the latest directory
+aws s3 cp index.min.js ${LATEST_DEPLOY_URL} --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
+
 rm index.browserified.js
