@@ -1,4 +1,11 @@
 #!/usr/bin/env bash
+
 npm run build
-aws s3 cp index.min.js s3://cdn.staging.mobials.com/analytics/0.1.0/analytics.min.js --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
+
+#determine the version of the code we are currently on
+TAG_VERSION=$(git describe --tags)
+#use that to build our deploy url and push to proper folder in S3
+DEPLOY_URL="s3://cdn.staging.mobials.com/analytics/$TAG_VERSION/analytics.min.js"
+
+aws s3 cp index.min.js ${DEPLOY_URL} --grants read=uri=http://acs.amazonaws.com/groups/global/AllUsers
 rm index.browserified.js
