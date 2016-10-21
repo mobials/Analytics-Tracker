@@ -38,3 +38,4 @@ jspm_packages
 /.idea
 /test.js
 /index.min.js
+/analytics.min.js
