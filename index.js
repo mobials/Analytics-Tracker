@@ -6,12 +6,10 @@
 'use strict';
 
 const uuid = require('uuid');
+const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 //the endpoint where all analytics is to be sent
 const DISPATCH_URI = 'https://api.mobials.com/tracker/dispatch';
-
-//name of the cookie used for anonymous tracking
-const COOKIE_NAME = 'mobials_tracker_uuid';
 
 var analytics = {};
 
@@ -39,48 +37,11 @@ analytics.track = function(eventType, payload) {
         payload: [payload],
         sdk_client_key: analytics.SDKClientKey,
         version: analytics.version,
-        actor_uuid: analytics.getAnonymousUserUuid()
+        //actor_uuid: analytics.getAnonymousUserUuid()
     });
     http.open("POST", analytics.dispatch_uri, true);
     http.setRequestHeader("Content-type", "application/json");
     http.send(params);
-};
-
-/**
- * @param name the name of the cookie to read
- * @returns {*}
- */
-analytics.readCookie = function(name) {
-    var nameEQ = name + "=";
-    var ca = document.cookie.split(';');
-    for(var i=0;i < ca.length;i++) {
-        var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1,c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-    }
-    return null;
-};
-
-/**
- * Creates a new anonymous user (via a cookie)
- *
- * @returns {*}
- */
-analytics.createNewAnonymousUser = function() {
-    var userUuid = uuid.v4();
-    var expires = 315360000; //10 years
-    document.cookie = COOKIE_NAME + "=" + userUuid + ';' + expires + "; path=/";
-    return userUuid;
-};
-
-/**
- * Returns the UUID of the current anonymous user.
- *
- * @returns {*}
- */
-analytics.getAnonymousUserUuid = function() {
-    var cookie = analytics.readCookie(COOKIE_NAME);
-    return cookie ? cookie : analytics.createNewAnonymousUser();
 };
 
 
@@ -94,3 +55,4 @@ if (analytics.queue.length > 0) {
     }
 }
 
+module.exports = analytics;
