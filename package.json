@@ -4,13 +4,14 @@
   "description": "mobials js",
   "main": "index.js",
   "scripts": {
-    "build": "browserify index.js > index.browserified.js && minify index.browserified.js --output analytics.min.js"
+    "build": "browserify index.js > index.browserified.js && minify index.browserified.js > analytics.min.js"
   },
   "author": "Brad Hanebury",
   "license": "ISC",
   "dependencies": {
     "browserify": "^13.1.0",
-    "uuid": "^2.0.3"
+    "uuid": "^2.0.3",
+    "xmlhttprequest": "^1.8.0"
   },
   "repository": "https://github.com/mobials/Analytics-Tracker"
 }
