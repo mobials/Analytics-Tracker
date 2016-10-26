@@ -41,6 +41,23 @@ analytics.track = function(eventType, payload) {
     http.send(params);
 };
 
+/**
+ *
+ * @param eventType the name of the event
+ * @param payload an array of event payload objects
+ */
+analytics.trackBatch = function(eventType, payload) {
+    var http = new XMLHttpRequest();
+
+    var params = JSON.stringify({
+        event: eventType,
+        payload: payload
+    });
+    http.open("POST", analytics.dispatch_uri, true);
+    http.setRequestHeader("Content-type", "application/json");
+    http.send(params);
+};
+
 
 /**
  * Once everything is setup, we check the queue that was passed in order to see
