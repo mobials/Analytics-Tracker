@@ -34,10 +34,7 @@ analytics.track = function(eventType, payload) {
 
     var params = JSON.stringify({
         event: eventType,
-        payload: [payload],
-        sdk_client_key: analytics.SDKClientKey,
-        version: analytics.version,
-        //actor_uuid: analytics.getAnonymousUserUuid()
+        payload: [payload]
     });
     http.open("POST", analytics.dispatch_uri, true);
     http.setRequestHeader("Content-type", "application/json");
