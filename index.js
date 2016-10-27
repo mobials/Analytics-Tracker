@@ -37,7 +37,7 @@ analytics.track = function(eventType, payload) {
         payload: [payload]
     });
     http.open("POST", analytics.dispatch_uri, true);
-    http.setRequestHeader("Content-type", "application/json");
+    http.setRequestHeader("Content-Type", "application/json");
     http.send(params);
 };
 
@@ -54,7 +54,7 @@ analytics.trackBatch = function(eventType, payload) {
         payload: payload
     });
     http.open("POST", analytics.dispatch_uri, true);
-    http.setRequestHeader("Content-type", "application/json");
+    http.setRequestHeader("Content-Type", "application/json");
     http.send(params);
 };
 
