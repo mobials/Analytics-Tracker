@@ -5,11 +5,12 @@
 
 'use strict';
 
-const uuid = require('uuid');
-const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+var https = require('https');
 
 //the endpoint where all analytics is to be sent
 const DISPATCH_URI = 'https://api.mobials.com/tracker/dispatch';
+const DISPATCH_HOST = 'api.mobials.com';
+const DISPATCH_PATH = '/tracker/dispatch';
 
 var analytics = {};
 
@@ -19,6 +20,8 @@ var analytics = {};
     analytics.queue = analytics.queue ? analytics.queue : [];
     analytics.debug = typeof analytics.debug === 'undefined' ? false : analytics.debug;
     analytics.dispatch_uri = analytics.dispatch_uri ? analytics.dispatch_uri : DISPATCH_URI;
+    analytics.host = analytics.host ? analytics.host : DISPATCH_HOST;
+    analytics.path = analytics.path ? analytics.path : DISPATCH_PATH;
     analytics.SDKClientKey = analytics.SDKClientKey ? analytics.SDKClientKey : null;
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {});
 
@@ -30,15 +33,33 @@ var analytics = {};
  * @param payload any relevant data for the event
  */
 analytics.track = function(eventType, payload) {
-    var http = new XMLHttpRequest();
 
-    var params = JSON.stringify({
+    var postData = JSON.stringify({
         event: eventType,
         payload: [payload]
     });
-    http.open("POST", analytics.dispatch_uri, true);
-    http.setRequestHeader("Content-Type", "application/json");
-    http.send(params);
+
+    var post_options = {
+        host: analytics.host,
+        path: analytics.path,
+        method: 'POST',
+        port: 443,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Length': Buffer.byteLength(postData)
+        }
+    };
+
+    var post_req = https.request(post_options, function(res) {
+        res.setEncoding('utf8');
+        res.on('data', function (chunk) {
+            //console.log('Response: ' + chunk);
+        });
+    });
+
+    // post the data
+    post_req.write(postData);
+    post_req.end();
 };
 
 /**
@@ -47,15 +68,33 @@ analytics.track = function(eventType, payload) {
  * @param payload an array of event payload objects
  */
 analytics.trackBatch = function(eventType, payload) {
-    var http = new XMLHttpRequest();
 
-    var params = JSON.stringify({
+    var postData = JSON.stringify({
         event: eventType,
         payload: payload
     });
-    http.open("POST", analytics.dispatch_uri, true);
-    http.setRequestHeader("Content-Type", "application/json");
-    http.send(params);
+
+    var post_options = {
+        host: analytics.host,
+        path: analytics.path,
+        method: 'POST',
+        port: 443,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Length': Buffer.byteLength(postData)
+        }
+    };
+
+    var post_req = https.request(post_options, function(res) {
+        res.setEncoding('utf8');
+        res.on('data', function (chunk) {
+            //console.log('Response: ' + chunk);
+        });
+    });
+
+    // post the data
+    post_req.write(postData);
+    post_req.end();
 };
 
 
