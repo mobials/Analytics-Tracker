@@ -55,6 +55,11 @@ analytics.track = function(eventType, payload) {
         res.on('data', function (chunk) {
             //console.log('Response: ' + chunk);
         });
+        res.on('error', function(error) {
+            if (analytics.debug === true) {
+                console.log(error);
+            }
+        });
     });
 
     // post the data
