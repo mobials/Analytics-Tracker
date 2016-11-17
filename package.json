@@ -1,6 +1,6 @@
 {
-  "name": "mobials-analytics-tracker",
-  "version": "0.0.1",
+  "name": "reviewsii-analytics-tracker",
+  "version": "0.1.4",
   "description": "mobials js",
   "main": "index.js",
   "scripts": {
