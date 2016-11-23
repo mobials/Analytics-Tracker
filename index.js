@@ -39,32 +39,10 @@ analytics.track = function(eventType, payload) {
         payload: [payload]
     });
 
-    var post_options = {
-        host: analytics.host,
-        path: analytics.path,
-        method: 'POST',
-        port: 443,
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Content-Length': Buffer.byteLength(postData)
-        }
-    };
+    var uri = DISPATCH_URI + '?q=' + encodeURIComponent(postData);
 
-    var post_req = https.request(post_options, function(res) {
-        res.setEncoding('utf8');
-        res.on('data', function (chunk) {
-            //console.log('Response: ' + chunk);
-        });
-        res.on('error', function(error) {
-            if (analytics.debug === true) {
-                console.log(error);
-            }
-        });
+    https.get(uri, function(res) {
     });
-
-    // post the data
-    post_req.write(postData);
-    post_req.end();
 };
 
 /**
@@ -79,27 +57,10 @@ analytics.trackBatch = function(eventType, payload) {
         payload: payload
     });
 
-    var post_options = {
-        host: analytics.host,
-        path: analytics.path,
-        method: 'POST',
-        port: 443,
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Content-Length': Buffer.byteLength(postData)
-        }
-    };
+    var uri = DISPATCH_URI + '?q=' + encodeURIComponent(postData);
 
-    var post_req = https.request(post_options, function(res) {
-        res.setEncoding('utf8');
-        res.on('data', function (chunk) {
-            //console.log('Response: ' + chunk);
-        });
+    https.get(uri, function(res) {
     });
-
-    // post the data
-    post_req.write(postData);
-    post_req.end();
 };
 
 
