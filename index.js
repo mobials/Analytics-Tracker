@@ -39,10 +39,19 @@ analytics.track = function(eventType, payload) {
         payload: [payload]
     });
 
-    var uri = DISPATCH_URI + '?q=' + encodeURIComponent(postData);
-
-    https.get(uri, function(res) {
+    var request = https.request({
+        host: DISPATCH_HOST,
+        path: DISPATCH_PATH + '?q=' + encodeURIComponent(postData),
+        method: 'GET',
+        withCredentials: false
+    }, function(res) {
+        if (analytics.debug === true) {
+            console.log(res.body);
+            console.log(res.statusCode);
+        }
     });
+
+    request.end();
 };
 
 /**
@@ -57,10 +66,19 @@ analytics.trackBatch = function(eventType, payload) {
         payload: payload
     });
 
-    var uri = DISPATCH_URI + '?q=' + encodeURIComponent(postData);
-
-    https.get(uri, function(res) {
+    var request = https.request({
+        host: DISPATCH_HOST,
+        path: DISPATCH_PATH + '?q=' + encodeURIComponent(postData),
+        method: 'GET',
+        withCredentials: false
+    }, function(res) {
+        if (analytics.debug === true) {
+            console.log(res.body);
+            console.log(res.statusCode);
+        }
     });
+
+    request.end();
 };
 
 
