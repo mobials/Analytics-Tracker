@@ -8,9 +8,9 @@
 var https = require('https');
 
 //the endpoint where all analytics is to be sent
-const DISPATCH_URI = 'https://api.mobials.com/tracker/dispatch';
-const DISPATCH_HOST = 'api.mobials.com';
-const DISPATCH_PATH = '/tracker/dispatch';
+var DISPATCH_URI = 'https://api.mobials.com/tracker/dispatch';
+var DISPATCH_HOST = 'api.mobials.com';
+var DISPATCH_PATH = '/tracker/dispatch';
 
 var analytics = {};
 
