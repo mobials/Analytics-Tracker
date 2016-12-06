@@ -39,3 +39,5 @@ jspm_packages
 /test.js
 /index.min.js
 /analytics.min.js
+/deploy-staging
+/deploy-production
